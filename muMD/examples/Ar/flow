@@ -1,0 +1,15 @@
+title "stupid test"
+
+l_scr
+output ar.output
+error ar.error
+config ar.config
+
+field ar.field
+
+rcut 8.5
+healing 1.0
+
+#end is here after finish rubbish follows
+finish
+rubish
