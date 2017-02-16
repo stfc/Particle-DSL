@@ -1,12 +1,10 @@
-# Makefile for the original form of the tra_adv benchmark.
+# Makefile for manual, PSyKAl version of microMD.
 
 # Compiler and associated flags must be set through the following
 # environment variables:
 #
 #   export F90=gfortran
 #   export F90FLAGS=-O3
-#   export OMPFLAGS=-fopenmp
-#   export MPIF90=mpif90
 
 all: muMD.exe
 
