@@ -16,6 +16,8 @@ module m_ReadControl
   implicit none
   private
   public :: readControl
+  type(controlType), save, public   :: control
+
   !
 contains
   !

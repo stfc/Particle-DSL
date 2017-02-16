@@ -9,6 +9,7 @@ program microMD
   use m_readControl 
   use m_readConfig
   use m_readField
+  use m_psy
 
   use m_neighbours
   use m_forces
@@ -22,7 +23,7 @@ program microMD
   character (len=12) :: tm_str
 
   type(ioType)        :: io
-  type(controlType)   :: control
+!  type(controlType)   :: control
   type(fieldType)     :: field
   type(particlesType) :: particles
   integer :: i,sp,t
@@ -73,16 +74,15 @@ program microMD
         particles%z(i) = particles%z(i) + particles%vz(i)*dt 
      enddo
 
-     call computeForces(particles,control)
+     call invoke_forces(particles, particles%eng)
+
+     ! call invoke(calc_vdw(particles, particles%eng),     &
+     !            calc_lj(),      &
+     !            calc_bonding(), &
+     !            calc_ewald())
 
      ! Update velocities using computed forces, second stage
-     do i=1,particles%nGParticles
-        sp=particles%spec(i)
-        im=control%timestep/(2.0_rp*particles%mass(sp))
-        particles%vx(i) = particles%vx(i) + im*particles%fx(i)
-        particles%vy(i) = particles%vy(i) + im*particles%fy(i)
-        particles%vz(i) = particles%vz(i) + im*particles%fz(i)
-     enddo
+     call invoke_verlet2(particles, control%timestep)
 
      write(*,*)"Centre of Mass", particles%centreOfMass()
      write(*,*)"total energy", particles%energy()/engUnits, trim(field%units)

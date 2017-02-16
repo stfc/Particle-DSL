@@ -4,6 +4,7 @@ module m_potentials
   use m_constants
   use m_types
   use m_useful,only : getVdw
+  use m_readControl, only: control
   implicit none
   private
   public :: ljes,ljesS
@@ -43,11 +44,14 @@ contains
   
   end function ljes
 
-  pure real(rp) function ljesS(vdw,r2,rc,l)
-    real(rp),intent(in) :: r2,rc,l
+  pure real(rp) function ljesS(vdw,r2)
+    real(rp),intent(in) :: r2
     type(vdwType),intent(in) :: vdw
 
-    real(rp) :: s,e,s6
+    real(rp) :: s,e,s6, rc, l
+
+    rc = control%rc
+    l = control%lamda
 
     if (vdw%on) then
       e=vdw%param(1)

@@ -1,5 +1,6 @@
-!    Copyright (c) 2016-2016 Alin Marin Elena <alinm.elena@gmail.com>
-!    The MIT License http://opensource.org/licenses/MIT
+!  Copyright (c) 2016-2016 Alin Marin Elena <alinm.elena@gmail.com>
+!  Modifications Copyright (c) 2017 Science and Technology Facilities Council
+!  The MIT License http://opensource.org/licenses/MIT
 module m_forces
   use m_constants
   use m_types
@@ -32,6 +33,8 @@ module m_forces
       fy=0.0_rp
       fz=0.0_rp
       do l=1,ps%neigh(i)%n
+
+
         j=ps%neigh(i)%list(l)
         r=[ps%x(j),ps%y(j),ps%z(j)]
         sj=hs(ps%hi,r)
@@ -49,7 +52,7 @@ module m_forces
            fy=rij(2)*rdU*ir
            fz=rij(3)*rdU*ir
          case(2)
-           eng=eng+ljesS(ps%vdw(k),r2,control%rc,control%lamda)
+           eng=eng+ljesS(ps%vdw(k),r2)
         end select 
         if (i<j) then
           ps%fx(j)=ps%fx(j)-fx

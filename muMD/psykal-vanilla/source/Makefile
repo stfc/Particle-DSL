@@ -10,16 +10,21 @@ all: muMD.exe
 
 FORT_FLAGS = ${F90FLAGS} ${OMPFLAGS}
 
-KERN_OBJ = constants.o forces.o muMD.o neighbours.o parser.o potentials.o readConfig.o readControl.o readField.o sampler.o setup.o types.o units.o useful.o
+INFRA_OBJ = constants.o neighbours.o parser.o potentials.o readConfig.o readControl.o readField.o sampler.o setup.o types.o units.o useful.o
+KERN_OBJ = forces.o verlet2_kernel.o force_kernel.o
+
+${KERN_OBJ}: ${INFRA_OBJ}
 
 forces.o: types.o potentials.o
 potentials.o: useful.o
-muMD.o: setup.o readControl.o readConfig.o readField.o neighbours.o
+muMD.o: setup.o readControl.o readConfig.o readField.o neighbours.o psy.o
 readControl.o: parser.o
 readField.o: units.o
+psy.o: ${KERN_OBJ}
+setup.o: constants.o types.o useful.o
 
-muMD.exe: ${KERN_OBJ}
-	${F90} -o $@ ${KERN_OBJ}
+muMD.exe: muMD.o psy.o ${KERN_OBJ}
+	${F90} -o $@ muMD.o psy.o ${KERN_OBJ} ${INFRA_OBJ}
 
 %.o: %.f90
 	${F90} ${FORT_FLAGS} -c $<

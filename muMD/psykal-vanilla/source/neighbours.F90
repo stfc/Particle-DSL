@@ -30,10 +30,11 @@ module m_neighbours
     real(rp) :: r2,si(3),r(3),sj(3),rij(3),sij(3),rc2
 
     rc2=rc**2
-    do i=1,ps%nGParticles-1
+    do i=1,ps%nGParticles
       r=[ps%x(i),ps%y(i),ps%z(i)]
       si=hs(ps%hi,r)
-      do j=i+1,ps%nGParticles
+      do j=1,ps%nGParticles
+        if(j==i) CYCLE
         r=[ps%x(j),ps%y(j),ps%z(j)]
         sj=hs(ps%hi,r)
         sij=si-sj
