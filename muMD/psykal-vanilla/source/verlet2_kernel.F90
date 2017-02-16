@@ -1,20 +1,21 @@
 module verlet2_mod
   use m_Constants
+  use kernel_mod
   implicit none
 
-!!$  type, extends(kernel_type) :: verlet2
-!!$     type(arg), dimension(10) :: meta_args =    &
-!!$          (/ arg(READ, PARTICLE_SPECIES),       & 
-!!$             arg(READ, PARTICLE_MASS),          & 
-!!$             arg(READ, PARTICLE_FORCE),         &
-!!$             arg(READWRITE, PARTICLE_VELOCITY), &
-!!$             arg(READ,  R_SCALAR, POINTWISE)    & ! Time-step
-!!$           /)
-!!$     integer :: ITERATES_OVER = PARTICLES
-!!$
-!!$  contains
-!!$    procedure, nopass :: code => verlet2_kernel
-!!$  end type verlet2
+  type, extends(kernel_type) :: verlet2
+     type(pd_arg), dimension(5) :: meta_args =    &
+          (/ pd_arg(PD_READ, PARTICLE_SPECIES),       & 
+             pd_arg(PD_READ, PARTICLE_MASS),          & 
+             pd_arg(PD_READ, PARTICLE_FORCE),         &
+             pd_arg(PD_READWRITE, PARTICLE_VELOCITY), &
+             pd_arg(PD_READ,  R_SCALAR)    & ! Time-step
+           /)
+     integer :: ITERATES_OVER = PD_PARTICLES
+
+  contains
+    procedure, nopass :: code => verlet2_kernel
+  end type verlet2
 
 contains
 

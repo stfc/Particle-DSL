@@ -1,27 +1,30 @@
 module forces_mod
   use m_Constants, only: rp
   use m_Types, only: vdwType
+  use kernel_mod
   implicit none
 
-!!$  type, extends(kernel_type) :: force
-!!$     type(arg), dimension(10) :: meta_args =    &
-!!$          (/ arg(READ, PARTICLE_POSITION),       & 
-!!$             arg(READ, PARTICLE_SPECIES),       & 
-!!$             arg(READWRITE, PARTICLE_FORCE),         &
-!!$             arg(READWRITE, R_SCALAR), & ! Energy
-!!$             arg(READ, UNIT_CELL), & ! h and hi
-!!$             arg(READWRITE, NUM_PARTICLE_SPECIES), &
-!!$             arg(READ,  FORCEFIELD_PARAMS) & ! Probably should not be passed in as an argument but this is the
-!!$ simplest solution given the current structure of microMD
-!!$           /)
-!!$     integer :: ITERATES_OVER = PARTICLE_PAIRS
-!!$!    Whether this kernel writes to the properties of
-!!$!    one or both of the particles in the pair
-!!$     integer :: ONE_SIDED
-!!$
-!!$  contains
-!!$    procedure, nopass :: code => force_kernel
-!!$  end type force
+  type, extends(kernel_type) :: force
+     type(pd_arg), dimension(7) :: meta_args =     &
+          (/ pd_arg(PD_READ, PARTICLE_POSITION),   & 
+             pd_arg(PD_READ, PARTICLE_SPECIES),    & 
+             pd_arg(PD_READWRITE, PARTICLE_FORCE), &
+             pd_arg(PD_SUM, R_SCALAR),             & ! Energy
+             pd_arg(PD_READ, UNIT_CELL),     & ! h and hi (unit cell vectors and inverse)
+             pd_arg(PD_READ, NUM_PARTICLE_SPECIES), &
+             pd_arg(PD_READ, FORCEFIELD_PARAMS) & ! Probably should not be passed 
+                                             ! in as an argument but this is the
+                                             ! simplest solution given the
+                                             ! current structure of microMD
+           /)
+     integer :: ITERATES_OVER = PD_PARTICLE_PAIRS
+     ! Whether this kernel writes to the properties of
+     ! one or both of the particles in the pair
+     integer :: ONE_SIDED
+
+  contains
+    procedure, nopass :: code => force_kernel
+  end type force
 
 contains
 

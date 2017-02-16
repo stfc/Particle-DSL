@@ -10,7 +10,7 @@ all: muMD.exe
 
 FORT_FLAGS = ${F90FLAGS} ${OMPFLAGS}
 
-INFRA_OBJ = constants.o neighbours.o parser.o potentials.o readConfig.o readControl.o readField.o sampler.o setup.o types.o units.o useful.o
+INFRA_OBJ = constants.o neighbours.o parser.o potentials.o readConfig.o readControl.o readField.o sampler.o setup.o types.o units.o useful.o kernel_mod.o
 KERN_OBJ = forces.o verlet2_kernel.o force_kernel.o
 
 ${KERN_OBJ}: ${INFRA_OBJ}
