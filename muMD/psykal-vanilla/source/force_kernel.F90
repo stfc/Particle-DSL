@@ -3,10 +3,30 @@ module forces_mod
   use m_Types, only: vdwType
   implicit none
 
+!!$  type, extends(kernel_type) :: force
+!!$     type(arg), dimension(10) :: meta_args =    &
+!!$          (/ arg(READ, PARTICLE_POSITION),       & 
+!!$             arg(READ, PARTICLE_SPECIES),       & 
+!!$             arg(READWRITE, PARTICLE_FORCE),         &
+!!$             arg(READWRITE, R_SCALAR), & ! Energy
+!!$             arg(READ, UNIT_CELL), & ! h and hi
+!!$             arg(READWRITE, NUM_PARTICLE_SPECIES), &
+!!$             arg(READ,  FORCEFIELD_PARAMS) & ! Probably should not be passed in as an argument but this is the
+!!$ simplest solution given the current structure of microMD
+!!$           /)
+!!$     integer :: ITERATES_OVER = PARTICLE_PAIRS
+!!$!    Whether this kernel writes to the properties of
+!!$!    one or both of the particles in the pair
+!!$     integer :: ONE_SIDED
+!!$
+!!$  contains
+!!$    procedure, nopass :: code => force_kernel
+!!$  end type force
+
 contains
 
-subroutine force_kernel(xi, yi, zi, ispecies, &
-                        xj, yj, zj, jspecies, &
+subroutine force_kernel(xi, yi, zi, xj, yj, zj, &
+                        ispecies, jspecies, &
                         fx, fy, fz,           &
                         eng, h, hi, nspecies, vdw)
   use m_useful, only: getVdw, hs

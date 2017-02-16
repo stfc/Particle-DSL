@@ -24,9 +24,9 @@ contains
         j=Particles%neigh(i)%list(l)
 
         call force_kernel(Particles%x(i), Particles%Y(i), &
-                          Particles%Z(i), Particles%spec(i), &
-                          Particles%X(j), Particles%Y(j), &
-                          Particles%Z(j), Particles%spec(j), &
+                          Particles%Z(i), Particles%X(j), &
+                          Particles%Y(j), Particles%Z(j), &
+                          Particles%spec(i), Particles%spec(j),&
                           Particles%fx(i), Particles%fy(i),  &
                           Particles%fz(i), &
                           Energy, Particles%h, Particles%hi, &
